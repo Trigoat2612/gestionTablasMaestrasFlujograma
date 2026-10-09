@@ -1,27 +1,21 @@
 # Versión base
 
-## v1.0.0 · Gestión de tablas maestras
+## gestionTablasMaestras v1.0.1 · Operation Map Panel
 
-Fecha: 9 de octubre de 2026
+Base previa: v1.0.0 · Sitio inicial para Gestión de Tablas Maestras.
 
-Esta versión se toma como primera base del sitio de presentación dinámica del procedimiento de Gestión de tablas maestras.
+Cambios de esta versión:
 
-### Fuente funcional
+- Agrega un indicador gerencial desplegable de **escenarios operativos**.
+- Incorpora el panel **Mapa de escenarios operativos** para identificar rutas de atención:
+  - Ruta rápida.
+  - Ruta con pruebas.
+  - Dato distrital.
+  - Subsanación.
+  - Cambio de alcance.
+- Mantiene visible el panel **Pendientes de formalización**.
+- No cambia la lógica BPMN ni los archivos BPMN fuente.
 
-17 archivos BPMN entregados por el usuario:
 
-- 1 diagrama N0.
-- 10 diagramas N1.
-- 6 diagramas N2.
-
-### Características heredadas del sitio de Gestión de licencias
-
-- Vista gerencial.
-- Visor BPMN interactivo.
-- Mapa por niveles.
-- Panel de detalle.
-- Navegación entre subprocesos.
-- Corrección visual de pools y lanes.
-- Buscador transversal.
-- Vista de pendientes de formalización **visible**.
-- Responsive y preparado para Vercel.
+## 1.0.2
+Mejora de la portada gerencial: indicadores interactivos con paneles desplegables alineados y navegación contextual.

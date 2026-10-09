@@ -1,44 +1,38 @@
-# Validación · Gestión de tablas maestras v1.0.0
+# Validación · gestionTablasMaestras v1.0.1
 
-## Resultado
+## Cambios aplicados
 
-La estructura del proyecto y los BPMN fueron revisados antes de empaquetar la versión.
+- Se agregó un panel desplegable **Mapa de escenarios operativos** en la vista gerencial.
+- El panel identifica rutas y decisiones técnicas/documentales del procedimiento de tablas maestras.
+- Se mantuvo visible **Pendientes de formalización**.
 
-### BPMN
+## Archivos modificados
 
-- 17 archivos BPMN incorporados.
-- Todos los archivos pudieron parsearse como XML válido.
-- Se identificaron 54 actividades/tareas/call activities.
-- Se identificaron 17 gateways.
-- Se identificaron 6 roles/carriles principales.
-- Las 16 Call Activities con `calledElement` apuntan a procesos existentes dentro del catálogo entregado.
-- Las 16 asociaciones están registradas en `calledElementTargets` para navegación directa en la aplicación.
+- `src/components/ExecutivePresentation.tsx`
+- `src/styles.css`
+- `package.json`
+- `package-lock.json`
+- `README.md`
+- `VERSION_BASE.md`
+- `VALIDACION.md`
 
-### Código
+## Validación realizada
 
-- Se adaptó `catalog.ts` a Gestión de tablas maestras.
-- Se adaptó `procedure.ts` al contenido soportado por los BPMN.
-- Se creó una vista gerencial específica para el nuevo proceso.
-- Se mantiene visible el panel **Pendientes de formalización**.
-- Se actualizó el buscador y la identidad del sitio.
-- Se conservan las mejoras visuales de pools/lanes de la versión base de Gestión de licencias.
-- Validación TypeScript realizada con stubs locales y `tsc 5.8.3`: sin errores en los archivos fuente del proyecto.
+- Revisión de sintaxis JSX/TSX por inspección estructural.
+- Revisión de referencias de estado `showOperationPanel`.
+- Revisión de estilos responsive del nuevo panel.
 
-### Build con dependencias reales
+## Validación pendiente
 
-Se intentó ejecutar `npm ci`, pero el acceso al registro npm agotó el tiempo disponible en este entorno y dejó una instalación incompleta. Por ello no se declara un `npm run build` real como exitoso aquí.
-
-En un entorno con acceso normal a npm, validar con:
+No se ejecutó `npm run build` porque el entorno no cuenta con `node_modules` y la instalación de dependencias depende del acceso al registro npm. Validar en local o Vercel con:
 
 ```bash
 npm ci
 npm run build
 ```
 
-Configuración de Vercel incluida:
 
-```text
-Framework: Vite
-Build Command: npm run build
-Output Directory: dist
-```
+## Validación adicional
+- Se verificó sintaxis TSX de `ExecutivePresentation.tsx` mediante TypeScript `transpileModule`: sin errores de sintaxis.
+- Los cuatro recuadros de resumen usan el mismo patrón interactivo y `aria-expanded`.
+- El detalle se muestra en un único panel alineado al contenedor principal y responde a tablet/móvil.

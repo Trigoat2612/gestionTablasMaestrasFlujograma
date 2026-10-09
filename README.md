@@ -88,3 +88,15 @@ Para reemplazar un diagrama manteniendo la navegación:
 ## Nota sobre “Pendientes de formalización”
 
 Los puntos mostrados en esa vista son **propuestas inferidas del modelo BPMN para validación**, no decisiones ya aprobadas. Se mantienen visibles deliberadamente, conforme al requerimiento de esta versión.
+
+
+## v1.0.1 · Operation Map Panel
+
+Se agregó el panel desplegable **Mapa de escenarios operativos** en la cabecera gerencial. Permite identificar Ruta rápida, Ruta con pruebas, Dato distrital, Subsanación y Cambio de alcance sin revisar todos los BPMN.
+
+
+## Cambios de versión 1.0.2
+- Los cuatro indicadores de la cabecera gerencial son ahora desplegables.
+- El panel expandido se alinea al mismo ancho de la vista gerencial y de los demás paneles.
+- Cada tarjeta muestra un chevron para indicar que puede abrir/cerrar su detalle.
+- Solo un resumen permanece abierto a la vez para conservar una lectura compacta.

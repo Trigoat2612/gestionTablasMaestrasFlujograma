@@ -2,7 +2,7 @@ import { useState } from 'react'
 import {
   AlertTriangle, ArrowRight, BarChart3, CheckCircle2, ClipboardCheck, Database,
   FileCheck2, GitBranch, Layers3, ListChecks, PlayCircle, RefreshCcw, ShieldCheck,
-  UsersRound, Workflow, Zap,
+  UsersRound, Workflow, Zap, ChevronDown,
 } from 'lucide-react'
 import { diagrams } from '../data/catalog'
 import { pendingScenarios, procedure } from '../data/procedure'
@@ -31,6 +31,8 @@ type Scenario = {
   diagramId: string
   attention?: string
 }
+
+type SummaryPanel = 'steps' | 'scenarios' | 'diagrams' | 'controls'
 
 const journey: JourneyStep[] = [
   {
@@ -167,9 +169,19 @@ const indicators = [
   ['Cierres en SGD', 'Verifica que los cambios concluidos cuenten con expediente formalizado.'],
 ]
 
+const operationGroups = [
+  { title: 'Ruta rápida', items: ['CAMBIO_ESTÁNDAR', 'EJECUCIÓN_DIRECTA'], detail: 'Cambio autorizado que puede aplicarse sin ciclo de pruebas.' },
+  { title: 'Ruta con pruebas', items: ['PRUEBA', 'VALIDACIÓN_PJ', 'PRODUCCIÓN'], detail: 'Configuración, evidencia, conformidad y pase controlado.' },
+  { title: 'Dato distrital', items: ['VALIDACIÓN_DISTRITAL'], detail: 'Confirmación de fuente, alcance y datos por instancia distrital.' },
+  { title: 'Subsanación', items: ['OBSERVACIÓN', 'SUBSANACIÓN'], detail: 'Corrección de FTM-02 y anexos sin perder trazabilidad.' },
+  { title: 'Cambio de alcance', items: ['REAPROBACIÓN', 'DENEGACIÓN'], detail: 'Nueva decisión del propietario cuando la corrección cambia el alcance.' },
+]
+
 export function ExecutivePresentation({ onOpenDiagram, onOpenPending }: ExecutivePresentationProps) {
   const [activeStep, setActiveStep] = useState(journey[0])
   const [activeScenario, setActiveScenario] = useState(scenarios[0])
+  const [activeSummaryPanel, setActiveSummaryPanel] = useState<SummaryPanel | null>(null)
+  const toggleSummaryPanel = (panel: SummaryPanel) => setActiveSummaryPanel((current) => current === panel ? null : panel)
   const activeStepDiagramId = activeStep.diagramId
 
   return (
@@ -187,12 +199,95 @@ export function ExecutivePresentation({ onOpenDiagram, onOpenPending }: Executiv
           </div>
         </div>
         <div className="executive-scoreboard">
-          <div><strong>{journey.length}</strong><span>pasos de control</span></div>
-          <div><strong>{responsibilityRows.length}</strong><span>roles principales</span></div>
-          <div><strong>{diagrams.length}</strong><span>diagramas vinculados</span></div>
-          <div><strong>{executiveControls.length}</strong><span>controles críticos</span></div>
+          <button type="button" className={activeSummaryPanel === 'steps' ? 'scoreboard-action active' : 'scoreboard-action'} onClick={() => toggleSummaryPanel('steps')} aria-expanded={activeSummaryPanel === 'steps'} aria-controls="executive-summary-panel">
+            <strong>{journey.length}</strong><span>pasos de control</span><ChevronDown className="scoreboard-chevron" size={18} />
+          </button>
+          <button type="button" className={activeSummaryPanel === 'scenarios' ? 'scoreboard-action active' : 'scoreboard-action'} onClick={() => toggleSummaryPanel('scenarios')} aria-expanded={activeSummaryPanel === 'scenarios'} aria-controls="executive-summary-panel">
+            <strong>{operationGroups.length}</strong><span>escenarios operativos</span><ChevronDown className="scoreboard-chevron" size={18} />
+          </button>
+          <button type="button" className={activeSummaryPanel === 'diagrams' ? 'scoreboard-action active' : 'scoreboard-action'} onClick={() => toggleSummaryPanel('diagrams')} aria-expanded={activeSummaryPanel === 'diagrams'} aria-controls="executive-summary-panel">
+            <strong>{diagrams.length}</strong><span>diagramas vinculados</span><ChevronDown className="scoreboard-chevron" size={18} />
+          </button>
+          <button type="button" className={activeSummaryPanel === 'controls' ? 'scoreboard-action active' : 'scoreboard-action'} onClick={() => toggleSummaryPanel('controls')} aria-expanded={activeSummaryPanel === 'controls'} aria-controls="executive-summary-panel">
+            <strong>{executiveControls.length}</strong><span>controles críticos</span><ChevronDown className="scoreboard-chevron" size={18} />
+          </button>
         </div>
       </div>
+
+      {activeSummaryPanel && (
+        <article id="executive-summary-panel" className="summary-detail-panel">
+          {activeSummaryPanel === 'steps' && (
+            <>
+              <div className="summary-panel-heading">
+                <GitBranch size={19} />
+                <div><h2>Pasos de control</h2><p>Lectura compacta del recorrido del proceso y del actor responsable en cada etapa.</p></div>
+              </div>
+              <div className="summary-panel-grid steps-grid">
+                {journey.map((step) => (
+                  <button key={step.id} type="button" className="summary-step-card" onClick={() => step.diagramId && onOpenDiagram(step.diagramId)}>
+                    <span>{step.title.split('.')[0]}</span><div><strong>{step.title.replace(/^\d\.\s*/, '')}</strong><small>{step.actor}</small></div><ArrowRight size={14} />
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+
+          {activeSummaryPanel === 'scenarios' && (
+            <>
+              <div className="summary-panel-heading">
+                <Database size={19} />
+                <div><h2>Mapa de escenarios operativos</h2><p>Identifica las rutas principales de atención y las decisiones técnicas/documentales asociadas al cambio de tablas maestras.</p></div>
+              </div>
+              <div className="summary-panel-grid scenario-grid">
+                {operationGroups.map((group) => (
+                  <div key={group.title} className="summary-panel-card">
+                    <strong>{group.title}</strong>
+                    <div className="summary-tags">{group.items.map((item) => <span key={item}>{item}</span>)}</div>
+                    <p>{group.detail}</p>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
+          {activeSummaryPanel === 'diagrams' && (
+            <>
+              <div className="summary-panel-heading">
+                <Layers3 size={19} />
+                <div><h2>Diagramas vinculados</h2><p>Navega directamente por los niveles N0, N1 y N2 del procedimiento.</p></div>
+              </div>
+              <div className="diagram-summary-grid">
+                {(['N0', 'N1', 'N2'] as const).map((level) => (
+                  <div key={level} className="diagram-summary-group">
+                    <strong>{level}</strong><span>{diagrams.filter((diagram) => diagram.level === level).length} diagramas</span>
+                    <div>
+                      {diagrams.filter((diagram) => diagram.level === level).map((diagram) => (
+                        <button key={diagram.id} type="button" onClick={() => onOpenDiagram(diagram.id)}>{diagram.shortTitle}<ArrowRight size={13} /></button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
+          {activeSummaryPanel === 'controls' && (
+            <>
+              <div className="summary-panel-heading">
+                <ClipboardCheck size={19} />
+                <div><h2>Controles críticos</h2><p>Controles que deben preservarse durante todo el ciclo del cambio.</p></div>
+              </div>
+              <div className="summary-panel-grid controls-grid">
+                {executiveControls.map((control) => (
+                  <div key={control.title} className="summary-panel-card control-summary-card">
+                    <CheckCircle2 size={16} /><div><strong>{control.title}</strong><p>{control.detail}</p></div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+        </article>
+      )}
 
       <div className="executive-grid">
         <article className="executive-card executive-card-wide">

@@ -1,6 +1,6 @@
 export const procedure = {
   title: 'Procedimiento de gestión de tablas maestras',
-  version: 'Modelo BPMN · Proyecto v1.0.0',
+  version: 'Modelo BPMN · Proyecto v1.0.2',
   date: '9 de octubre de 2026',
   objective: 'Gestionar cambios sobre tablas maestras desde la identificación de la necesidad hasta su aprobación, documentación FTM-02, ejecución por Softplan, validación del resultado y cierre trazable mediante SGD.',
   scope: 'La vista integra el trabajo del Poder Judicial y Softplan. Comprende al Administrador del Módulo, Secretario Técnico Distrital, Dueño del Proceso o Propietario de Tabla, Usuario habilitado del SGD, Mesa o Coordinación Técnica de Softplan y Equipo Técnico de Softplan.',
